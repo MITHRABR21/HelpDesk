@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="description" content="DeskFlow IT Helpdesk Ticket Tracker">
+  <title>DeskFlow | IT Helpdesk</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#dashboard">
+        <span class="brand-icon" aria-hidden="true">D</span>
+        <span class="brand-text">
+          Desk<span>Flow</span>
+          <small>IT SUPPORT WORKSPACE</small>
+        </span>
+      </a>
+
+      <div class="workspace-label">WORKSPACE</div>
+
+      <nav class="sidebar-nav">
+        <a
+          href="#dashboard"
+          class="nav-link active"
+          data-page="dashboard"
+          aria-current="page">
+          <span class="nav-icon" aria-hidden="true">▦</span>
+          <span>Dashboard</span>
+        </a>
+
+        <a
+          href="#create-ticket"
+          class="nav-link"
+          data-page="create-ticket">
+          <span class="nav-icon" aria-hidden="true">＋</span>
+          <span>Create Ticket</span>
+        </a>
+
+        <a
+          href="#manage-tickets"
+          class="nav-link"
+          data-page="manage-tickets">
+          <span class="nav-icon" aria-hidden="true">☷</span>
+          <span>Manage Tickets</span>
+          <span class="nav-count" id="sidebar-ticket-count">0</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-help">
+        <span class="help-icon" aria-hidden="true">?</span>
+        <h3>A clearer support workflow.</h3>
+        <p>
+          Report issues, track progress, and keep every resolution organised.
+        </p>
+        <a href="#create-ticket" class="help-link">
+          Raise a ticket <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <span class="storage-indicator" aria-hidden="true"></span>
+        <div>
+          <strong>Local workspace</strong>
+          <small>Data saved in this browser</small>
+        </div>
+      </div>
+    </aside>
+
+    <button
+      class="sidebar-overlay"
+      id="sidebar-overlay"
+      type="button"
+      aria-label="Close navigation"
+      hidden>
+    </button>
+
+    <!-- MAIN WORKSPACE -->
+    <div class="main-shell">
+
+      <!-- HEADER -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button
+            class="icon-button menu-toggle"
+            id="menu-toggle"
+            type="button"
+            aria-label="Open navigation"
+            aria-controls="sidebar"
+            aria-expanded="false">
+            <span aria-hidden="true">☰</span>
+          </button>
+
+          <div class="breadcrumb">
+            Workspace
+            <span aria-hidden="true">/</span>
+            <strong id="breadcrumb-page">Dashboard</strong>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <span class="workspace-badge">IT Helpdesk</span>
+          <div class="profile-avatar" aria-label="Local workspace user">
+            DF
+          </div>
+        </div>
+      </header>
+
+      <main class="main-content" id="main-content">
+
+        <!-- DASHBOARD -->
+        <section
+          class="page active"
+          id="dashboard-page"
+          aria-labelledby="dashboard-title">
+
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">YOUR SUPPORT OVERVIEW</p>
+              <h1 id="dashboard-title">Everything under control.</h1>
+              <p class="page-description">
+                A clear view of your tickets, priorities, and progress.
+              </p>
+            </div>
+
+            <a href="#create-ticket" class="button button-primary">
+              <span aria-hidden="true">＋</span>
+              Create Ticket
+            </a>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Total Tickets</span>
+                <span
+                  class="stat-icon total-icon"
+                  aria-hidden="true">▦</span>
+              </div>
+              <strong class="stat-value" id="total-count">0</strong>
+              <p>All tickets in your workspace</p>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Open</span>
+                <span
+                  class="stat-icon open-icon"
+                  aria-hidden="true">○</span>
+              </div>
+              <strong class="stat-value" id="open-count">0</strong>
+              <p>Waiting for attention</p>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>In Progress</span>
+                <span
+                  class="stat-icon progress-icon"
+                  aria-hidden="true">↻</span>
+              </div>
+              <strong class="stat-value" id="progress-count">0</strong>
+              <p>Currently being worked on</p>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Resolved</span>
+                <span
+                  class="stat-icon resolved-icon"
+                  aria-hidden="true">✓</span>
+              </div>
+              <strong class="stat-value" id="resolved-count">0</strong>
+              <p>Successfully completed</p>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="panel recent-tickets-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Recent tickets</h2>
+                  <p>Your latest support requests.</p>
+                </div>
+
+                <a href="#manage-tickets" class="text-link">
+                  View all <span aria-hidden="true">→</span>
+                </a>
+              </div>
+
+              <div class="table-scroll">
+                <table class="ticket-table">
+                  <caption class="sr-only">
+                    Five most recent support tickets
+                  </caption>
+
+                  <thead>
+                    <tr>
+                      <th scope="col">Ticket</th>
+                      <th scope="col">Priority</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Created</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="recent-ticket-body"></tbody>
+                </table>
+              </div>
+
+              <div class="empty-state" id="dashboard-empty">
+                <span class="empty-icon" aria-hidden="true">＋</span>
+                <h3>Your workspace starts here.</h3>
+                <p>
+                  Create your first ticket to start tracking IT issues.
+                </p>
+                <a href="#create-ticket" class="button button-primary">
+                  Create your first ticket
+                </a>
+              </div>
+            </article>
+
+            <article class="panel resolution-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Resolution overview</h2>
+                  <p>Progress across all tickets.</p>
+                </div>
+              </div>
+
+              <div class="resolution-ring" id="resolution-ring">
+                <div class="ring-content">
+                  <strong id="resolution-percent">0%</strong>
+                  <span>Resolved</span>
+                </div>
+              </div>
+
+              <p
+                class="resolution-summary"
+                id="resolution-summary">
+                No tickets yet.
+              </p>
+
+              <div class="status-legend">
+                <div>
+                  <span
+                    class="legend-dot open-dot"
+                    aria-hidden="true"></span>
+                  Open
+                  <strong id="legend-open">0</strong>
+                </div>
+
+                <div>
+                  <span
+                    class="legend-dot progress-dot"
+                    aria-hidden="true"></span>
+                  In Progress
+                  <strong id="legend-progress">0</strong>
+                </div>
+
+                <div>
+                  <span
+                    class="legend-dot resolved-dot"
+                    aria-hidden="true"></span>
+                  Resolved
+                  <strong id="legend-resolved">0</strong>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- CREATE / EDIT TICKET -->
+        <section
+          class="page"
+          id="create-ticket-page"
+          aria-labelledby="create-title"
+          hidden>
+
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">LET’S GET IT SORTED</p>
+              <h1 id="create-title">Create a support ticket.</h1>
+              <p class="page-description">
+                Tell us what happened and how urgently you need help.
+              </p>
+            </div>
+          </div>
+
+          <div class="form-layout">
+            <article class="panel ticket-form-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2 id="form-title">Ticket information</h2>
+                  <p>Fields marked with * are required.</p>
+                </div>
+              </div>
+
+              <form id="ticket-form">
+                <input type="hidden" id="editing-ticket-id">
+
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="employee-name">
+                      Employee name <span>*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="employee-name"
+                      name="employeeName"
+                      placeholder="Enter your full name"
+                      autocomplete="name"
+                      maxlength="80"
+                      required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="employee-email">
+                      Email address <span>*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="employee-email"
+                      name="employeeEmail"
+                      placeholder="you@company.com"
+                      autocomplete="email"
+                      maxlength="254"
+                      required>
+                  </div>
+
+                  <div class="form-group full-width">
+                    <label for="ticket-title">
+                      Issue title <span>*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="ticket-title"
+                      name="title"
+                      placeholder="Example: Unable to connect to office Wi-Fi"
+                      maxlength="120"
+                      required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="ticket-category">
+                      Category <span>*</span>
+                    </label>
+                    <select
+                      id="ticket-category"
+                      name="category"
+                      required>
+                      <option value="">Select a category</option>
+                      <option value="Hardware">Hardware</option>
+                      <option value="Software">Software</option>
+                      <option value="Network">Network</option>
+                      <option value="Account Access">Account Access</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="ticket-priority">
+                      Priority <span>*</span>
+                    </label>
+                    <select
+                      id="ticket-priority"
+                      name="priority"
+                      required>
+                      <option value="">Select priority</option>
+                      <option value="Low">
+                        Low — Minor inconvenience
+                      </option>
+                      <option value="Medium">
+                        Medium — Work is affected
+                      </option>
+                      <option value="High">
+                        High — Unable to work
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="form-group full-width">
+                    <label for="ticket-description">
+                      Issue description <span>*</span>
+                    </label>
+                    <textarea
+                      id="ticket-description"
+                      name="description"
+                      rows="6"
+                      placeholder="Describe the issue, when it started, and anything you have already tried."
+                      maxlength="2000"
+                      aria-describedby="description-hint"
+                      required></textarea>
+
+                    <div class="field-footer">
+                      <small id="description-hint">
+                        Include useful details. Do not include passwords.
+                      </small>
+                      <small id="description-counter">0 / 2000</small>
+                    </div>
+                  </div>
+                </div>
+
+                <p
+                  class="form-error"
+                  id="form-error"
+                  role="alert"
+                  hidden></p>
+
+                <div class="form-actions">
+                  <button
+                    type="button"
+                    class="button button-secondary"
+                    id="reset-form-button">
+                    Clear form
+                  </button>
+
+                  <button
+                    type="submit"
+                    class="button button-primary"
+                    id="submit-ticket-button">
+                    Create Ticket
+                    <span aria-hidden="true">→</span>
+                  </button>
+                </div>
+              </form>
+            </article>
+
+            <aside class="ticket-guidance">
+              <article class="guidance-card">
+                <span class="guidance-icon" aria-hidden="true">i</span>
+                <h2>A good ticket gets things moving.</h2>
+                <p>
+                  A clear description makes the issue easier to
+                  understand and resolve.
+                </p>
+
+                <ul>
+                  <li>Use a short, specific issue title.</li>
+                  <li>Mention any error message you see.</li>
+                  <li>Explain how the issue affects your work.</li>
+                  <li>Choose a priority that matches its impact.</li>
+                </ul>
+              </article>
+
+              <article class="local-note">
+                <h3>Saved to your browser</h3>
+                <p>
+                  This demo stores tickets locally. Clearing browser
+                  data removes saved tickets. It does not send
+                  requests to an IT team.
+                </p>
+              </article>
+            </aside>
+          </div>
+        </section>
+
+        <!-- MANAGE TICKETS -->
+        <section
+          class="page"
+          id="manage-tickets-page"
+          aria-labelledby="manage-title"
+          hidden>
+
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">YOUR TICKET WORKSPACE</p>
+              <h1 id="manage-title">Manage support tickets.</h1>
+              <p class="page-description">
+                Find requests, update progress, and keep things moving.
+              </p>
+            </div>
+
+            <a href="#create-ticket" class="button button-primary">
+              <span aria-hidden="true">＋</span>
+              Create Ticket
+            </a>
+          </div>
+
+          <article class="panel">
+            <div class="ticket-toolbar">
+              <div class="search-field">
+                <span aria-hidden="true">⌕</span>
+                <label for="ticket-search" class="sr-only">
+                  Search tickets
+                </label>
+                <input
+                  type="search"
+                  id="ticket-search"
+                  placeholder="Search ID, title, or employee…">
+              </div>
+
+              <div class="filter-group">
+                <label for="status-filter" class="sr-only">
+                  Filter by status
+                </label>
+                <select id="status-filter">
+                  <option value="All">All statuses</option>
+                  <option value="Open">Open</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+
+                <label for="priority-filter" class="sr-only">
+                  Filter by priority
+                </label>
+                <select id="priority-filter">
+                  <option value="All">All priorities</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+
+                <button
+                  type="button"
+                  class="button button-secondary"
+                  id="clear-filters">
+                  Reset
+                </button>
+              </div>
+            </div>
+
+            <div class="table-scroll">
+              <table class="ticket-table manage-table">
+                <caption class="sr-only">
+                  Support tickets matching your search and filters
+                </caption>
+
+                <thead>
+                  <tr>
+                    <th scope="col">Ticket</th>
+                    <th scope="col">Employee</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody id="manage-ticket-body"></tbody>
+              </table>
+            </div>
+
+            <div class="empty-state" id="manage-empty">
+              <span class="empty-icon" aria-hidden="true">⌕</span>
+              <h3 id="manage-empty-title">No tickets yet.</h3>
+              <p id="manage-empty-description">
+                Create a ticket to start organising support requests.
+              </p>
+            </div>
+
+            <div class="table-footer">
+              <span id="ticket-results-count" role="status">
+                Showing 0 tickets
+              </span>
+              <span>Stored locally in this browser</span>
+            </div>
+          </article>
+        </section>
+
+        <footer class="main-footer">
+          <span>DeskFlow · A simpler support workspace.</span>
+          <span>Built with HTML, CSS &amp; JavaScript</span>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <!-- TICKET DETAILS -->
+  <dialog
+    class="ticket-dialog"
+    id="ticket-dialog"
+    aria-labelledby="detail-title">
+
+    <div class="dialog-heading">
+      <div>
+        <p class="eyebrow" id="detail-ticket-id">TICKET DETAILS</p>
+        <h2 id="detail-title">Ticket details</h2>
+      </div>
+
+      <button
+        class="icon-button"
+        id="close-ticket-dialog"
+        type="button"
+        aria-label="Close ticket details">
+        ×
+      </button>
+    </div>
+
+    <div class="detail-badges" id="detail-badges"></div>
+
+    <dl class="detail-grid">
+      <div>
+        <dt>Employee</dt>
+        <dd id="detail-employee"></dd>
+      </div>
+      <div>
+        <dt>Email</dt>
+        <dd id="detail-email"></dd>
+      </div>
+      <div>
+        <dt>Category</dt>
+        <dd id="detail-category"></dd>
+      </div>
+      <div>
+        <dt>Created</dt>
+        <dd id="detail-created"></dd>
+      </div>
+    </dl>
+
+    <div class="detail-description">
+      <h3>Issue description</h3>
+      <p id="detail-description"></p>
+    </div>
+
+    <div class="detail-status-control">
+      <label for="detail-status">Ticket status</label>
+      <select id="detail-status">
+        <option value="Open">Open</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Resolved">Resolved</option>
+      </select>
+    </div>
+
+    <p
+      class="form-error"
+      id="detail-error"
+      role="alert"
+      hidden></p>
+
+    <div class="dialog-actions">
+      <button
+        type="button"
+        class="button button-secondary"
+        id="edit-detail-ticket">
+        Edit ticket
+      </button>
+
+      <button
+        type="button"
+        class="button button-primary"
+        id="save-ticket-status">
+        Save status
+      </button>
+    </div>
+  </dialog>
+
+  <!-- DELETE CONFIRMATION -->
+  <dialog
+    class="confirm-dialog"
+    id="delete-dialog"
+    aria-labelledby="delete-title"
+    aria-describedby="delete-description">
+
+    <span class="delete-warning-icon" aria-hidden="true">!</span>
+    <h2 id="delete-title">Delete this ticket?</h2>
+    <p id="delete-description">
+      This ticket will be permanently removed from this browser.
+      This action cannot be undone.
+    </p>
+
+    <p
+      class="form-error"
+      id="delete-error"
+      role="alert"
+      hidden></p>
+
+    <div class="dialog-actions">
+      <button
+        type="button"
+        class="button button-secondary"
+        id="cancel-delete">
+        Keep ticket
+      </button>
+
+      <button
+        type="button"
+        class="button button-danger"
+        id="confirm-delete">
+        Delete ticket
+      </button>
+    </div>
+  </dialog>
+
+  <!-- NOTIFICATIONS -->
+  <div
+    class="toast-container"
+    id="toast-container"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true">
+  </div>
+
+  <noscript>
+    <p class="noscript-message">
+      Please enable JavaScript to create and manage tickets in DeskFlow.
+    </p>
+  </noscript>
+</body>
+</html>
